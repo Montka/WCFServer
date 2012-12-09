@@ -1,0 +1,5 @@
+R:\WCF\WcfTestService\WcfTestService\bin\WcfTestService.dll
+R:\WCF\WcfTestService\WcfTestService\bin\WcfTestService.pdb
+R:\WCF\WcfTestService\WcfTestService\obj\Debug\WcfTestService.csprojResolveAssemblyReference.cache
+R:\WCF\WcfTestService\WcfTestService\obj\Debug\WcfTestService.dll
+R:\WCF\WcfTestService\WcfTestService\obj\Debug\WcfTestService.pdb
