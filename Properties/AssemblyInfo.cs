@@ -2,35 +2,35 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-// Управление общими сведениями о сборке осуществляется с помощью указанного ниже 
-// набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
-// связанные со сборкой.
-[assembly: AssemblyTitle("WcfTestService")]
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+[assembly: AssemblyTitle("FileServer.Services")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("WcfTestService")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCompany("Hewlett-Packard")]
+[assembly: AssemblyProduct("FileServer.Services")]
+[assembly: AssemblyCopyright("Copyright © Hewlett-Packard 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
-// Если для атрибута ComVisible задать значение FALSE, типы в этой сборке будут невидимыми 
-// для компонентов COM. Если в этой сборке необходимо получить доступ к типу из 
-// компонента COM, задайте для атрибута ComVisible этого типа значение TRUE.
+// Setting ComVisible to false makes the types in this assembly not visible 
+// to COM components.  If you need to access a type in this assembly from 
+// COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
 
-// Указанный ниже идентификатор GUID предназначен для идентификации библиотеки типов, если этот проект будет видимым для COM-объектов
-[assembly: Guid("1643f0e8-83ee-49c6-9222-c8d709f24786")]
+// The following GUID is for the ID of the typelib if this project is exposed to COM
+[assembly: Guid("5bc4d2c9-7d4d-4521-bdee-2494d8a4f29c")]
 
-// Сведения о версии сборки состоят из указанных ниже четырех значений:
+// Version information for an assembly consists of the following four values:
 //
-//      Основной номер версии
-//      Дополнительный номер версии 
-//      Номер сборки
-//      Номер редакции
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
 //
-// Можно указать все значения или установить для номеров редакции и сборки значение по умолчанию 
-// с помощью символа "*", как показано ниже:
+// You can specify all the values or you can default the Build and Revision Numbers 
+// by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
