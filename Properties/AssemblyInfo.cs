@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Управление общими сведениями о сборке осуществляется с помощью указанного ниже 
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // связанные со сборкой.
-[assembly: AssemblyTitle("NewWcfServer")]
+[assembly: AssemblyTitle("WcfService1")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NewWcfServer")]
+[assembly: AssemblyProduct("WcfService1")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Указанный ниже идентификатор GUID предназначен для идентификации библиотеки типов, если этот проект будет видимым для COM-объектов
-[assembly: Guid("ea392563-614b-4c36-9443-e5acf7db6104")]
+[assembly: Guid("0caef753-05ce-4fca-bb32-3855feb30d75")]
 
 // Сведения о версии сборки состоят из указанных ниже четырех значений:
 //

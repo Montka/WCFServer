@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 
-namespace NewWcfServer
+namespace WcfService1
 {
     // ПРИМЕЧАНИЕ. Команду "Переименовать" в меню "Рефакторинг" можно использовать для одновременного изменения имени интерфейса "IService1" в коде и файле конфигурации.
     [ServiceContract]
@@ -17,10 +17,7 @@ namespace NewWcfServer
         string GetData(int value);
 
         [OperationContract]
-        ApplicationType GetDataUsingDataContract(ApplicationType composite);
-
-        [OperationContract]
-        int InsertData(ApplicationType composite);
+        CompositeType GetDataUsingDataContract(CompositeType composite);
 
         // TODO: Добавьте здесь операции служб
     }
@@ -28,22 +25,23 @@ namespace NewWcfServer
 
     // Используйте контракт данных, как показано в примере ниже, чтобы добавить составные типы к операциям служб.
     [DataContract]
-    public class ApplicationType
+    public class CompositeType
     {
-        [DataMember]
-        public int ApplicationId { get; set; }
+        bool boolValue = true;
+        string stringValue = "Hello ";
 
         [DataMember]
-        public string ManagerName { get; set; }
+        public bool BoolValue
+        {
+            get { return boolValue; }
+            set { boolValue = value; }
+        }
 
         [DataMember]
-        public int ApplicationNumber { get; set; }
-
-        [DataMember]
-        public DateTime ApplicationDateTime { get; set; }
-
-        [DataMember]
-        public int OperationStatus { get; set; }
-
+        public string StringValue
+        {
+            get { return stringValue; }
+            set { stringValue = value; }
+        }
     }
 }
