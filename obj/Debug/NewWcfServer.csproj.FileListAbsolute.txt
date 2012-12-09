@@ -1,4 +1,0 @@
-R:\WCF\NewWcfServer\NewWcfServer\bin\NewWcfServer.dll
-R:\WCF\NewWcfServer\NewWcfServer\bin\NewWcfServer.pdb
-R:\WCF\NewWcfServer\NewWcfServer\obj\Debug\NewWcfServer.dll
-R:\WCF\NewWcfServer\NewWcfServer\obj\Debug\NewWcfServer.pdb
