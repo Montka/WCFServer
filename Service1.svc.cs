@@ -8,7 +8,9 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using Microsoft.SqlServer.Server;
-namespace WcfTestService
+
+
+namespace WcfService1
 {
     // ПРИМЕЧАНИЕ. Команду "Переименовать" в меню "Рефакторинг" можно использовать для одновременного изменения имени класса "Service1" в коде, SVC-файле и файле конфигурации.
     // ПРИМЕЧАНИЕ. Чтобы запустить клиент проверки WCF для тестирования службы, выберите элементы Service1.svc или Service1.svc.cs в обозревателе решений и начните отладку.
@@ -16,11 +18,18 @@ namespace WcfTestService
     {
         private const string ConnetionString = "Server=c40aff4d-5190-477c-812b-a12200a0119b.sqlserver.sequelizer.com;Database=dbc40aff4d5190477c812ba12200a0119b;User ID=doubddyerrnzaefz;Password=YHdzb6Ugt5ZVe35A6iAKQMLNZARqSpzbnHsmoSEkXPRmojeVSf72QJok5xGHoCve;";
 
-        public string GetData(int value)
+        public List<ApplicationType> GetDataByName(string name)
         {
-            return string.Format("You entered: {0}", value);
+
+            return new List<ApplicationType>();
         }
 
+
+        public List<ApplicationType> GetDataByDate(DateTime datetime)
+        {
+
+            return new List<ApplicationType>();
+        }
         public ApplicationType GetDataUsingDataContract(ApplicationType composite)
         {
             if (composite == null)
@@ -107,6 +116,5 @@ namespace WcfTestService
 
             return false;
         }
-
     }
 }
