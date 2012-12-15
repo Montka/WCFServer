@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
 using System.Windows.Forms;
 using System.Diagnostics;
 namespace WcfService1
@@ -11,20 +12,6 @@ namespace WcfService1
     {
         private const string ConnetionString = "Server=c40aff4d-5190-477c-812b-a12200a0119b.sqlserver.sequelizer.com;Database=dbc40aff4d5190477c812ba12200a0119b;User ID=doubddyerrnzaefz;Password=YHdzb6Ugt5ZVe35A6iAKQMLNZARqSpzbnHsmoSEkXPRmojeVSf72QJok5xGHoCve;";
 
-        public string GetData(int value)
-        {
-            return string.Format("You entered: {0}", value);
-        }
-
-        public ApplicationType GetDataUsingDataContract(ApplicationType composite)
-        {
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
-            }
-            return composite;
-        }
-
         public bool DeleteApplication(int applicationId)
         {
             var tables = new LinqWorkerDataContext();
@@ -33,6 +20,11 @@ namespace WcfService1
                 var order = tables.Orders.Single(c => c.Id == applicationId);
                 tables.Orders.DeleteOnSubmit(order);
                 tables.Orders.Context.SubmitChanges();
+
+                var text = "Заявка № " + applicationId + "удалена";
+                var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
+
+
                 return true;
             }
             catch (Exception ex)
@@ -40,7 +32,10 @@ namespace WcfService1
                 Console.Write(ex.Message);
                 return false;
             }
+   
+/*
             return false;
+*/
         }
         public bool DeleteManager(int managerId)
         {
@@ -50,6 +45,10 @@ namespace WcfService1
                 var manager = tables.Managers.Single(c => c.ManagerId == managerId);
                 tables.Managers.DeleteOnSubmit(manager);
                 tables.Managers.Context.SubmitChanges();
+
+                var text = "Мэнэджер № " + managerId + "удален";
+                var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
+
                 return true;
             }
             catch (Exception ex)
@@ -57,7 +56,9 @@ namespace WcfService1
                 Console.Write(ex.Message);
                 return false;
             }
+/*
             return false;
+*/
         }
 
         public bool UptadeApplication(ApplicationType composite)
@@ -73,7 +74,9 @@ namespace WcfService1
                 order.Status = composite.OperationStatus;
                 
                 tables.Orders.Context.SubmitChanges();
-                
+
+                var text = "Заявка изменена №" + order.Id + "остальное потом :)";
+                var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
                 return true;
             }
             catch (Exception ex)
@@ -81,7 +84,9 @@ namespace WcfService1
                 Console.Write(ex.Message);
                 return false;
             }
+/*
             return false;
+*/
         }
 
         public bool UpdateManager(ManagerType composite)
@@ -96,6 +101,9 @@ namespace WcfService1
 
                 tables.Managers.Context.SubmitChanges();
 
+                var text = "Менеджер изменен" + composite.ManagerName +"остальное потом :)";
+                var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
+
                 return true;
             }
             catch (Exception ex)
@@ -103,7 +111,37 @@ namespace WcfService1
                 Console.Write(ex.Message);
                 return false;
             }
+/*
             return false;
+*/
+        }
+
+        public bool SignIn(ManagerType composite)
+        {
+            var tables = new LinqWorkerDataContext();
+            try
+            {
+                var manager = tables.Managers.Single(c => c.ManagerName == composite.ManagerName);
+
+                bool flag;
+                string text;
+                if (manager.ManagerPassword == composite.ManagerPassword)
+                {
+                   text = composite.ManagerName + "вошел в систему";
+                   flag=true;
+                }
+                else { text = composite.ManagerName + " ошибка входа в систему";
+                    flag = false;
+                }
+            
+                var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
+                return flag;
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                return false;
+            }
         }
 
         public bool AddApplication(ApplicationType composite)
@@ -123,8 +161,11 @@ namespace WcfService1
 
                 try
                 {
+                    
                     tables.Orders.InsertOnSubmit(order);
                     tables.Orders.Context.SubmitChanges();
+                    var text = "заявка добавлена";
+                    var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
                     return true;
                 }
                 catch (Exception ex)
@@ -153,6 +194,8 @@ namespace WcfService1
                 {
                     tables.Managers.InsertOnSubmit(manager);
                     tables.Managers.Context.SubmitChanges();
+                    var text = "Менеджер добавлен";
+                    var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
                     return true;
                 }
                 catch (Exception ex)

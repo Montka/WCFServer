@@ -14,9 +14,6 @@ namespace WcfService1
     {
 
         [OperationContract]
-        ApplicationType GetDataUsingDataContract(ApplicationType composite);
-
-        [OperationContract]
         bool AddApplication(ApplicationType composite);
 
         [OperationContract]
@@ -33,6 +30,10 @@ namespace WcfService1
 
         [OperationContract]
         bool UpdateManager(ManagerType composite);
+
+        [OperationContract]
+        bool SignIn(ManagerType composite);
+
         // TODO: Добавьте здесь операции служб
     }
 
