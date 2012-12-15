@@ -32,7 +32,7 @@ namespace WcfService1
         bool UpdateManager(ManagerType composite);
 
         [OperationContract]
-        bool SignIn(ManagerType composite);
+        int SignIn(ManagerType composite);
 
         // TODO: Добавьте здесь операции служб
     }

@@ -120,33 +120,33 @@ namespace WcfService1
 */
         }
 
-        public bool SignIn(ManagerType composite)
+        public int SignIn(ManagerType composite)
         {
             var tables = new LinqWorkerDataContext();
             try
             {
                 var manager = tables.Managers.Single(c => c.ManagerName == composite.ManagerName);
 
-                bool flag;
+                int number;
                 string text;
                 if (manager.ManagerPassword == composite.ManagerPassword)
                 {
                    text = composite.ManagerName + " вошел в систему";
-                   flag=true;
+                    number = manager.ManagerId;
                 }
                 else 
                 { 
                     text = composite.ManagerName + " ошибка входа в систему";
-                    flag = false;
+                    number = -1;
                 }
                 var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{"+text+"}");
                 var resp = reqGet.GetResponse();
-                return flag;
+                return number;
             }
             catch (Exception ex)
             {
                 Console.Write(ex.Message);
-                return false;
+                return -1;
             }
         }
 
