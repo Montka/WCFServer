@@ -22,7 +22,8 @@ namespace WcfService1
                 tables.Orders.Context.SubmitChanges();
 
                 var text = "Заявка № " + applicationId + "удалена";
-                var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
+                var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
+                var resp = reqGet.GetResponse();
 
 
                 return true;
@@ -47,7 +48,8 @@ namespace WcfService1
                 tables.Managers.Context.SubmitChanges();
 
                 var text = "Мэнэджер № " + managerId + "удален";
-                var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
+                var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
+                var resp = reqGet.GetResponse();
 
                 return true;
             }
@@ -76,7 +78,8 @@ namespace WcfService1
                 tables.Orders.Context.SubmitChanges();
 
                 var text = "Заявка изменена №" + order.Id + "остальное потом :)";
-                var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
+                var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
+                var resp = reqGet.GetResponse();
                 return true;
             }
             catch (Exception ex)
@@ -102,7 +105,8 @@ namespace WcfService1
                 tables.Managers.Context.SubmitChanges();
 
                 var text = "Менеджер изменен" + composite.ManagerName +"остальное потом :)";
-                var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
+                var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
+                var resp = reqGet.GetResponse();
 
                 return true;
             }
@@ -127,14 +131,16 @@ namespace WcfService1
                 string text;
                 if (manager.ManagerPassword == composite.ManagerPassword)
                 {
-                   text = composite.ManagerName + "вошел в систему";
+                   text = composite.ManagerName + " вошел в систему";
                    flag=true;
                 }
-                else { text = composite.ManagerName + " ошибка входа в систему";
+                else 
+                { 
+                    text = composite.ManagerName + " ошибка входа в систему";
                     flag = false;
                 }
-            
-                var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
+                var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{"+text+"}");
+                var resp = reqGet.GetResponse();
                 return flag;
             }
             catch (Exception ex)
@@ -165,7 +171,8 @@ namespace WcfService1
                     tables.Orders.InsertOnSubmit(order);
                     tables.Orders.Context.SubmitChanges();
                     var text = "заявка добавлена";
-                    var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
+                    var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
+                    var resp = reqGet.GetResponse();
                     return true;
                 }
                 catch (Exception ex)
@@ -195,7 +202,8 @@ namespace WcfService1
                     tables.Managers.InsertOnSubmit(manager);
                     tables.Managers.Context.SubmitChanges();
                     var text = "Менеджер добавлен";
-                    var myWebRequest = WebRequest.Create("http://montka.herokuapp.com/logging{" + text + "}");
+                    var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
+                    var resp = reqGet.GetResponse();
                     return true;
                 }
                 catch (Exception ex)
