@@ -93,8 +93,6 @@ namespace WcfService1
 		
 		private int _Id;
 		
-		private string _Manager;
-		
 		private int _ApplicationNumber;
 		
 		private System.DateTime _DateTime;
@@ -109,8 +107,6 @@ namespace WcfService1
     partial void OnCreated();
     partial void OnIdChanging(int value);
     partial void OnIdChanged();
-    partial void OnManagerChanging(string value);
-    partial void OnManagerChanged();
     partial void OnApplicationNumberChanging(int value);
     partial void OnApplicationNumberChanged();
     partial void OnDateTimeChanging(System.DateTime value);
@@ -142,26 +138,6 @@ namespace WcfService1
 					this._Id = value;
 					this.SendPropertyChanged("Id");
 					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Manager", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Manager
-		{
-			get
-			{
-				return this._Manager;
-			}
-			set
-			{
-				if ((this._Manager != value))
-				{
-					this.OnManagerChanging(value);
-					this.SendPropertyChanging();
-					this._Manager = value;
-					this.SendPropertyChanged("Manager");
-					this.OnManagerChanged();
 				}
 			}
 		}
