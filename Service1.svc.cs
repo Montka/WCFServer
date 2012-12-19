@@ -148,12 +148,11 @@ namespace WcfService1
             try
             {
                 var manager = tables.Managers.Single(c => c.ManagerName == composite.ManagerName);
-
                 int number;
                 string text;
                 if (manager.ManagerPassword == composite.ManagerPassword)
                 {
-                    text = DateTime.Now.ToString() +  composite.ManagerName + " вошел в систему";
+                    text =  composite.ManagerName + " вошел в систему";
                     number = manager.ManagerId;
                 }
                 else 
