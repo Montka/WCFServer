@@ -43,7 +43,7 @@ namespace WcfService1
                 tables.Orders.DeleteOnSubmit(order);
                 tables.Orders.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString() +  " Заявка № " + applicationId + " удалена ";
+                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") +  " Заявка № " + applicationId + " удалена ";
                 var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                 var resp = reqGet.GetResponse();
 
@@ -69,7 +69,7 @@ namespace WcfService1
                 tables.Managers.DeleteOnSubmit(manager);
                 tables.Managers.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString() + "Мэнэджер № " + managerId + " удален ";
+                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") + "Мэнэджер № " + managerId + " удален ";
                 var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                 var resp = reqGet.GetResponse();
 
@@ -99,7 +99,7 @@ namespace WcfService1
                 
                 tables.Orders.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString() + "Заявка изменена №" + order.Id + "остальное потом :)";
+                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") + "Заявка изменена №" + order.Id + "остальное потом :)";
                 var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                 var resp = reqGet.GetResponse();
                 return true;
@@ -126,7 +126,7 @@ namespace WcfService1
 
                 tables.Managers.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString() + "Менеджер изменен" + composite.ManagerName + "остальное потом :)";
+                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") + "Менеджер изменен" + composite.ManagerName + "остальное потом :)";
                 var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                 var resp = reqGet.GetResponse();
 
@@ -152,12 +152,12 @@ namespace WcfService1
                 string text;
                 if (manager.ManagerPassword == composite.ManagerPassword)
                 {
-                    text =  composite.ManagerName + " вошел в систему";
+                    text =  DateTime.Now.ToString("yyyy-MM-dd hh:mm") + composite.ManagerName + " вошел в систему";
                     number = manager.ManagerId;
                 }
                 else 
                 {
-                    text = DateTime.Now.ToString() +  composite.ManagerName + " ошибка входа в систему";
+                    text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") + composite.ManagerName + " ошибка входа в систему";
                     number = -1;
                 }
                 var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{"+text+"}");
@@ -191,7 +191,7 @@ namespace WcfService1
                     
                     tables.Orders.InsertOnSubmit(order);
                     tables.Orders.Context.SubmitChanges();
-                    var text = DateTime.Now.ToString() +  "заявка добавлена";
+                    var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") + "заявка добавлена";
                     var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                     var resp = reqGet.GetResponse();
                     return true;
@@ -222,7 +222,7 @@ namespace WcfService1
                 {
                     tables.Managers.InsertOnSubmit(manager);
                     tables.Managers.Context.SubmitChanges();
-                    var text = DateTime.Now.ToString() +  "Менеджер добавлен";
+                    var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") + "Менеджер добавлен";
                     var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                     var resp = reqGet.GetResponse();
                     return true;
