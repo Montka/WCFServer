@@ -185,7 +185,8 @@ namespace WcfService1
                 {
                     String command =
                         String.Format(
-                            "INSERT INTO dbo.Orders(ApplicationNumber,DateTime,Status,ManagerId) VALUES({0},{1},{2},{3})", order.ApplicationNumber, order.DateTime,
+                            "INSERT INTO dbo.Orders(ApplicationNumber,DateTime,Status,ManagerId) VALUES(\'{0}\',\'{1}\',\'{2}\',\'{3}\')", order.ApplicationNumber,
+                            order.DateTime.ToString("yyyy-MM-dd hh:mm"),
                             order.Status, order.ManagerId);
                     tables.ExecuteCommand(command);
                     //tables.Orders.Context.SubmitChanges();
