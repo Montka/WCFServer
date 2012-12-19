@@ -69,7 +69,7 @@ namespace WcfService1
                 tables.Managers.DeleteOnSubmit(manager);
                 tables.Managers.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString() + "Мэнэджер № " + managerId + " удален ");
+                var text = DateTime.Now.ToString() + "Мэнэджер № " + managerId + " удален ";
                 var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                 var resp = reqGet.GetResponse();
 
