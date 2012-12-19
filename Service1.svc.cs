@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Linq;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Net;
-using System.Windows.Forms;
-using System.Diagnostics;
+
 namespace WcfService1
 {
     // ПРИМЕЧАНИЕ. Команду "Переименовать" в меню "Рефакторинг" можно использовать для одновременного изменения имени класса "Service1" в коде, SVC-файле и файле конфигурации.
@@ -32,8 +28,8 @@ namespace WcfService1
                 Console.Write(ex.Message.ToString());
                 return list;
             }
-   
         }
+
         public bool DeleteApplication(int applicationId)
         {
             var tables = new LinqWorkerDataContext();
@@ -43,10 +39,9 @@ namespace WcfService1
                 tables.Orders.DeleteOnSubmit(order);
                 tables.Orders.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") +  " Заявка № " + applicationId + " удалена ";
+                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + " Заявка № " + applicationId + " удалена ";
                 var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                 var resp = reqGet.GetResponse();
-
 
                 return true;
             }
@@ -55,11 +50,12 @@ namespace WcfService1
                 Console.Write(ex.Message);
                 return false;
             }
-   
-/*
-            return false;
-*/
+
+            /*
+                        return false;
+            */
         }
+
         public bool DeleteManager(int managerId)
         {
             var tables = new LinqWorkerDataContext();
@@ -69,7 +65,7 @@ namespace WcfService1
                 tables.Managers.DeleteOnSubmit(manager);
                 tables.Managers.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") + "Мэнэджер № " + managerId + " удален ";
+                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + "Мэнэджер № " + managerId + " удален ";
                 var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                 var resp = reqGet.GetResponse();
 
@@ -80,9 +76,9 @@ namespace WcfService1
                 Console.Write(ex.Message);
                 return false;
             }
-/*
-            return false;
-*/
+            /*
+                        return false;
+            */
         }
 
         public bool UptadeApplication(ApplicationType composite)
@@ -96,10 +92,10 @@ namespace WcfService1
                 order.DateTime = composite.ApplicationDateTime;
                 order.ManagerId = composite.ManagerId;
                 order.Status = composite.OperationStatus;
-                
+
                 tables.Orders.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") + "Заявка изменена №" + order.Id + "остальное потом :)";
+                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm " ) + "Заявка изменена №" + order.Id + "остальное потом :)";
                 var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                 var resp = reqGet.GetResponse();
                 return true;
@@ -109,9 +105,9 @@ namespace WcfService1
                 Console.Write(ex.Message);
                 return false;
             }
-/*
-            return false;
-*/
+            /*
+                        return false;
+            */
         }
 
         public bool UpdateManager(ManagerType composite)
@@ -126,7 +122,7 @@ namespace WcfService1
 
                 tables.Managers.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") + "Менеджер изменен" + composite.ManagerName + "остальное потом :)";
+                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + "Менеджер изменен" + composite.ManagerName + "остальное потом :)";
                 var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                 var resp = reqGet.GetResponse();
 
@@ -137,9 +133,9 @@ namespace WcfService1
                 Console.Write(ex.Message);
                 return false;
             }
-/*
-            return false;
-*/
+            /*
+                        return false;
+            */
         }
 
         public int SignIn(ManagerType composite)
@@ -152,15 +148,15 @@ namespace WcfService1
                 string text;
                 if (manager.ManagerPassword == composite.ManagerPassword)
                 {
-                    text =  DateTime.Now.ToString("yyyy-MM-dd hh:mm") + composite.ManagerName + " вошел в систему";
+                    text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + composite.ManagerName + " вошел в систему";
                     number = manager.ManagerId;
                 }
-                else 
+                else
                 {
-                    text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") + composite.ManagerName + " ошибка входа в систему";
+                    text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + composite.ManagerName + " ошибка входа в систему";
                     number = -1;
                 }
-                var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{"+text+"}");
+                var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                 var resp = reqGet.GetResponse();
                 return number;
             }
@@ -177,21 +173,23 @@ namespace WcfService1
 
             if (tables.Orders.All(x => x.DateTime != composite.ApplicationDateTime))
             {
-              
                 var order = new Orders
                     {
                         DateTime = composite.ApplicationDateTime,
                         ApplicationNumber = composite.ApplicationNumber,
                         Status = composite.OperationStatus,
-                        ManagerId = composite.ManagerId
+                        ManagerId = composite.ManagerId,
                     };
 
                 try
                 {
-                    
-                    tables.Orders.InsertOnSubmit(order);
-                    tables.Orders.Context.SubmitChanges();
-                    var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") + "заявка добавлена";
+                    String command =
+                        String.Format(
+                            "INSERT INTO dbo.Orders(ApplicationNumber,DateTime,Status,ManagerId) VALUES({0},{1},{2},{3})", order.ApplicationNumber, order.DateTime,
+                            order.Status, order.ManagerId);
+                    tables.ExecuteCommand(command);
+                    //tables.Orders.Context.SubmitChanges();
+                    var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + " заявка добавлена";
                     var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                     var resp = reqGet.GetResponse();
                     return true;
@@ -211,7 +209,6 @@ namespace WcfService1
 
             if (tables.Managers.All(x => x.ManagerName != composite.ManagerName))
             {
-
                 var manager = new Managers()
                     {
                         ManagerName = composite.ManagerName,
@@ -222,7 +219,7 @@ namespace WcfService1
                 {
                     tables.Managers.InsertOnSubmit(manager);
                     tables.Managers.Context.SubmitChanges();
-                    var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm") + "Менеджер добавлен";
+                    var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + "Менеджер добавлен";
                     var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                     var resp = reqGet.GetResponse();
                     return true;
