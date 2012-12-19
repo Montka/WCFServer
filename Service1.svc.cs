@@ -23,14 +23,13 @@ namespace WcfService1
                 var ch = tables.Changes;
                 list.AddRange(ch.Select(changese => changese.OrderId.ToString()));
 
-                tables.Changes.DeleteAllOnSubmit(ch);
-                tables.Orders.Context.SubmitChanges();
+                tables.ExecuteCommand("DELETE FROM dbo.Changes");
 
                 return list;
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                Console.Write(ex.Message.ToString());
                 return list;
             }
    
