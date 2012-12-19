@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Linq;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -12,6 +13,9 @@ namespace WcfService1
     [ServiceContract]
     public interface IService1
     {
+
+        [OperationContract]
+        List<string> GetNewOperation();
 
         [OperationContract]
         bool AddApplication(ApplicationType composite);

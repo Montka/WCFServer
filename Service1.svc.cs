@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data.Linq;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
@@ -12,6 +14,27 @@ namespace WcfService1
     {
         private const string ConnetionString = "Server=c40aff4d-5190-477c-812b-a12200a0119b.sqlserver.sequelizer.com;Database=dbc40aff4d5190477c812ba12200a0119b;User ID=doubddyerrnzaefz;Password=YHdzb6Ugt5ZVe35A6iAKQMLNZARqSpzbnHsmoSEkXPRmojeVSf72QJok5xGHoCve;";
 
+        public List<String> GetNewOperation()
+        {
+            var tables = new LinqWorkerDataContext();
+            var list = new List<String>();
+            try
+            {
+                var ch = tables.Changes;
+                list.AddRange(ch.Select(changese => changese.OrderId.ToString()));
+
+                tables.Changes.DeleteAllOnSubmit(ch);
+                tables.Orders.Context.SubmitChanges();
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message);
+                return list;
+            }
+   
+        }
         public bool DeleteApplication(int applicationId)
         {
             var tables = new LinqWorkerDataContext();
@@ -21,7 +44,7 @@ namespace WcfService1
                 tables.Orders.DeleteOnSubmit(order);
                 tables.Orders.Context.SubmitChanges();
 
-                var text = "Заявка № " + applicationId + "удалена";
+                var text = " Заявка № " + applicationId + " удалена ";
                 var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
                 var resp = reqGet.GetResponse();
 

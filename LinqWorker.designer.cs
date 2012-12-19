@@ -30,12 +30,12 @@ namespace WcfService1
 		
     #region Определения метода расширяемости
     partial void OnCreated();
-    partial void InsertOrders(Orders instance);
-    partial void UpdateOrders(Orders instance);
-    partial void DeleteOrders(Orders instance);
     partial void InsertManagers(Managers instance);
     partial void UpdateManagers(Managers instance);
     partial void DeleteManagers(Managers instance);
+    partial void InsertOrders(Orders instance);
+    partial void UpdateOrders(Orders instance);
+    partial void DeleteOrders(Orders instance);
     #endregion
 		
 		public LinqWorkerDataContext() : 
@@ -68,11 +68,11 @@ namespace WcfService1
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<Orders> Orders
+		public System.Data.Linq.Table<Changes> Changes
 		{
 			get
 			{
-				return this.GetTable<Orders>();
+				return this.GetTable<Changes>();
 			}
 		}
 		
@@ -82,6 +82,233 @@ namespace WcfService1
 			{
 				return this.GetTable<Managers>();
 			}
+		}
+		
+		public System.Data.Linq.Table<Orders> Orders
+		{
+			get
+			{
+				return this.GetTable<Orders>();
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Changes")]
+	public partial class Changes
+	{
+		
+		private int _OrderId;
+		
+		private System.DateTime _AddDateTime;
+		
+		private System.DateTime _OrderDateTime;
+		
+		private int _Id;
+		
+		public Changes()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderId", DbType="Int NOT NULL")]
+		public int OrderId
+		{
+			get
+			{
+				return this._OrderId;
+			}
+			set
+			{
+				if ((this._OrderId != value))
+				{
+					this._OrderId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddDateTime", DbType="DateTime NOT NULL")]
+		public System.DateTime AddDateTime
+		{
+			get
+			{
+				return this._AddDateTime;
+			}
+			set
+			{
+				if ((this._AddDateTime != value))
+				{
+					this._AddDateTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderDateTime", DbType="DateTime NOT NULL")]
+		public System.DateTime OrderDateTime
+		{
+			get
+			{
+				return this._OrderDateTime;
+			}
+			set
+			{
+				if ((this._OrderDateTime != value))
+				{
+					this._OrderDateTime = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this._Id = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Managers")]
+	public partial class Managers : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ManagerId;
+		
+		private string _ManagerName;
+		
+		private string _ManagerPassword;
+		
+		private EntitySet<Orders> _Orders;
+		
+    #region Определения метода расширяемости
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnManagerIdChanging(int value);
+    partial void OnManagerIdChanged();
+    partial void OnManagerNameChanging(string value);
+    partial void OnManagerNameChanged();
+    partial void OnManagerPasswordChanging(string value);
+    partial void OnManagerPasswordChanged();
+    #endregion
+		
+		public Managers()
+		{
+			this._Orders = new EntitySet<Orders>(new Action<Orders>(this.attach_Orders), new Action<Orders>(this.detach_Orders));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ManagerId
+		{
+			get
+			{
+				return this._ManagerId;
+			}
+			set
+			{
+				if ((this._ManagerId != value))
+				{
+					this.OnManagerIdChanging(value);
+					this.SendPropertyChanging();
+					this._ManagerId = value;
+					this.SendPropertyChanged("ManagerId");
+					this.OnManagerIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string ManagerName
+		{
+			get
+			{
+				return this._ManagerName;
+			}
+			set
+			{
+				if ((this._ManagerName != value))
+				{
+					this.OnManagerNameChanging(value);
+					this.SendPropertyChanging();
+					this._ManagerName = value;
+					this.SendPropertyChanged("ManagerName");
+					this.OnManagerNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerPassword", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string ManagerPassword
+		{
+			get
+			{
+				return this._ManagerPassword;
+			}
+			set
+			{
+				if ((this._ManagerPassword != value))
+				{
+					this.OnManagerPasswordChanging(value);
+					this.SendPropertyChanging();
+					this._ManagerPassword = value;
+					this.SendPropertyChanged("ManagerPassword");
+					this.OnManagerPasswordChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Managers_Orders", Storage="_Orders", ThisKey="ManagerId", OtherKey="ManagerId")]
+		public EntitySet<Orders> Orders
+		{
+			get
+			{
+				return this._Orders;
+			}
+			set
+			{
+				this._Orders.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Orders(Orders entity)
+		{
+			this.SendPropertyChanging();
+			entity.Managers = this;
+		}
+		
+		private void detach_Orders(Orders entity)
+		{
+			this.SendPropertyChanging();
+			entity.Managers = null;
 		}
 	}
 	
@@ -101,6 +328,8 @@ namespace WcfService1
 		
 		private int _ManagerId;
 		
+		private EntityRef<Managers> _Managers;
+		
     #region Определения метода расширяемости
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -119,6 +348,7 @@ namespace WcfService1
 		
 		public Orders()
 		{
+			this._Managers = default(EntityRef<Managers>);
 			OnCreated();
 		}
 		
@@ -213,6 +443,10 @@ namespace WcfService1
 			{
 				if ((this._ManagerId != value))
 				{
+					if (this._Managers.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
 					this.OnManagerIdChanging(value);
 					this.SendPropertyChanging();
 					this._ManagerId = value;
@@ -222,112 +456,36 @@ namespace WcfService1
 			}
 		}
 		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Managers")]
-	public partial class Managers : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ManagerId;
-		
-		private string _ManagerName;
-		
-		private string _ManagerPassword;
-		
-    #region Определения метода расширяемости
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnManagerIdChanging(int value);
-    partial void OnManagerIdChanged();
-    partial void OnManagerNameChanging(string value);
-    partial void OnManagerNameChanged();
-    partial void OnManagerPasswordChanging(string value);
-    partial void OnManagerPasswordChanged();
-    #endregion
-		
-		public Managers()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ManagerId
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Managers_Orders", Storage="_Managers", ThisKey="ManagerId", OtherKey="ManagerId", IsForeignKey=true)]
+		public Managers Managers
 		{
 			get
 			{
-				return this._ManagerId;
+				return this._Managers.Entity;
 			}
 			set
 			{
-				if ((this._ManagerId != value))
+				Managers previousValue = this._Managers.Entity;
+				if (((previousValue != value) 
+							|| (this._Managers.HasLoadedOrAssignedValue == false)))
 				{
-					this.OnManagerIdChanging(value);
 					this.SendPropertyChanging();
-					this._ManagerId = value;
-					this.SendPropertyChanged("ManagerId");
-					this.OnManagerIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string ManagerName
-		{
-			get
-			{
-				return this._ManagerName;
-			}
-			set
-			{
-				if ((this._ManagerName != value))
-				{
-					this.OnManagerNameChanging(value);
-					this.SendPropertyChanging();
-					this._ManagerName = value;
-					this.SendPropertyChanged("ManagerName");
-					this.OnManagerNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerPassword", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string ManagerPassword
-		{
-			get
-			{
-				return this._ManagerPassword;
-			}
-			set
-			{
-				if ((this._ManagerPassword != value))
-				{
-					this.OnManagerPasswordChanging(value);
-					this.SendPropertyChanging();
-					this._ManagerPassword = value;
-					this.SendPropertyChanged("ManagerPassword");
-					this.OnManagerPasswordChanged();
+					if ((previousValue != null))
+					{
+						this._Managers.Entity = null;
+						previousValue.Orders.Remove(this);
+					}
+					this._Managers.Entity = value;
+					if ((value != null))
+					{
+						value.Orders.Add(this);
+						this._ManagerId = value.ManagerId;
+					}
+					else
+					{
+						this._ManagerId = default(int);
+					}
+					this.SendPropertyChanged("Managers");
 				}
 			}
 		}
