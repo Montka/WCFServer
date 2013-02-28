@@ -8,7 +8,8 @@ namespace WcfService1
     // ПРИМЕЧАНИЕ. Чтобы запустить клиент проверки WCF для тестирования службы, выберите элементы Service1.svc или Service1.svc.cs в обозревателе решений и начните отладку.
     public class Service1 : IService1
     {
-        private const string ConnetionString = "Server=c40aff4d-5190-477c-812b-a12200a0119b.sqlserver.sequelizer.com;Database=dbc40aff4d5190477c812ba12200a0119b;User ID=doubddyerrnzaefz;Password=YHdzb6Ugt5ZVe35A6iAKQMLNZARqSpzbnHsmoSEkXPRmojeVSf72QJok5xGHoCve;";
+        private const string ConnetionString =
+            "Server=c40aff4d-5190-477c-812b-a12200a0119b.sqlserver.sequelizer.com;Database=dbc40aff4d5190477c812ba12200a0119b;User ID=doubddyerrnzaefz;Password=YHdzb6Ugt5ZVe35A6iAKQMLNZARqSpzbnHsmoSEkXPRmojeVSf72QJok5xGHoCve;";
 
         public List<String> GetNewOperation()
         {
@@ -30,25 +31,48 @@ namespace WcfService1
             }
         }
 
-        public bool DeleteApplication(int applicationId)
+        private void AddLog(string type, string message, DateTime datetime)
         {
             var tables = new LinqWorkerDataContext();
             try
             {
-                var order = tables.Orders.Single(c => c.Id == applicationId);
+                String command =
+                    String.Format(
+                        "INSERT INTO dbo.Log(Type,Message,Date,Time) VALUES(\'{0}\',\'{1}\',\'{2}\',\'{3}\')",
+                        type, message, datetime.ToString("yyyy-MM-dd"),
+                        datetime.ToString("hh:mm"));
+                tables.ExecuteCommand(command);
+
+                //tables.Orders.Context.SubmitChanges();
+            }
+            catch (Exception ex)
+            {
+                AddLog("system", "Ошибка при добавление записи в лог", DateTime.Now);
+            }
+        }
+
+        public bool DeleteOrder(OrderType composite)
+        {
+            var tables = new LinqWorkerDataContext();
+            string type = "user", message = string.Empty;
+            try
+            {
+                var order = tables.Orders.Single(c => c.Id == composite.OrderId);
                 tables.Orders.DeleteOnSubmit(order);
                 tables.Orders.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + " Заявка № " + applicationId + " удалена ";
-                var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
-                var resp = reqGet.GetResponse();
-
+                message = "Заявка удалена : " + composite.OrderArticle;
                 return true;
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                message = "Ошибка при удалении заявки : " + composite.OrderArticle;
+                type = "system";
                 return false;
+            }
+            finally
+            {
+                AddLog(type, message, DateTime.Now);
             }
 
             /*
@@ -56,54 +80,61 @@ namespace WcfService1
             */
         }
 
-        public bool DeleteManager(int managerId)
+        public bool DeleteManager(ManagerType composite)
         {
             var tables = new LinqWorkerDataContext();
+            string type = "user", message = string.Empty;
             try
             {
-                var manager = tables.Managers.Single(c => c.ManagerId == managerId);
+                var manager = tables.Managers.Single(c => c.ManagerId == composite.ManagerId);
                 tables.Managers.DeleteOnSubmit(manager);
                 tables.Managers.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + "Мэнэджер № " + managerId + " удален ";
-                var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
-                var resp = reqGet.GetResponse();
-
+                message = "Пользователь удален : " + composite.ManagerName;
                 return true;
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                message = "Ошиюка при удаление пользователя : " + composite.ManagerName;
+                type = "system";
                 return false;
+            }
+            finally
+            {
+                AddLog(type, message, DateTime.Now);
             }
             /*
                         return false;
             */
         }
 
-        public bool UptadeApplication(ApplicationType composite)
+        public bool UptadeOrder(OrderType composite)
         {
             var tables = new LinqWorkerDataContext();
+            string type = "user", message = string.Empty;
             try
             {
-                var order = tables.Orders.Single(c => c.Id == composite.ApplicationId);
+                var order = tables.Orders.Single(c => c.Id == composite.OrderId);
 
-                order.ApplicationNumber = composite.ApplicationNumber;
-                order.DateTime = composite.ApplicationDateTime;
+                order.Article = composite.OrderArticle;
+                order.Date = DateTime.Parse(composite.OrderDateTime.ToString("yy-MM-dd"));
                 order.ManagerId = composite.ManagerId;
-                order.Status = composite.OperationStatus;
+                order.Time = TimeSpan.Parse(composite.OrderDateTime.ToString("hh:mm"));
 
                 tables.Orders.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm " ) + "Заявка изменена №" + order.Id + "остальное потом :)";
-                var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
-                var resp = reqGet.GetResponse();
+                message = "Обновление заявки : " + composite.OrderArticle;
                 return true;
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                message = "Ошибка при обновлении заявки : " + composite.OrderArticle;
+                type = "system";
                 return false;
+            }
+            finally
+            {
+                AddLog(type, message, DateTime.Now);
             }
             /*
                         return false;
@@ -113,6 +144,7 @@ namespace WcfService1
         public bool UpdateManager(ManagerType composite)
         {
             var tables = new LinqWorkerDataContext();
+            string type = "user", message = string.Empty;
             try
             {
                 var manager = tables.Managers.Single(c => c.ManagerId == composite.ManagerId);
@@ -122,16 +154,18 @@ namespace WcfService1
 
                 tables.Managers.Context.SubmitChanges();
 
-                var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + "Менеджер изменен" + composite.ManagerName + "остальное потом :)";
-                var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
-                var resp = reqGet.GetResponse();
-
+                message = "Обновление пользователя : " + composite.ManagerName;
                 return true;
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                message = "Ошибка при обновление пользователя : " + composite.ManagerName;
+                type = "system";
                 return false;
+            }
+            finally
+            {
+                AddLog(type, message, DateTime.Now);
             }
             /*
                         return false;
@@ -141,64 +175,79 @@ namespace WcfService1
         public int SignIn(ManagerType composite)
         {
             var tables = new LinqWorkerDataContext();
+            string type = "user", message = string.Empty;
             try
             {
                 var manager = tables.Managers.Single(c => c.ManagerName == composite.ManagerName);
                 int number;
-                string text;
                 if (manager.ManagerPassword == composite.ManagerPassword)
                 {
-                    text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + composite.ManagerName + " вошел в систему";
+                    message = "Вход в систему : " + composite.ManagerName;
                     number = manager.ManagerId;
                 }
                 else
                 {
-                    text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + composite.ManagerName + " ошибка входа в систему";
+                    message = "Ошибка входа в систему : " + composite.ManagerName;
                     number = -1;
                 }
-                var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
-                var resp = reqGet.GetResponse();
+
                 return number;
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message);
+                message = "Ошибка при входе пользователя в систему : " + composite.ManagerName;
+                type = "system";
                 return -1;
+            }
+            finally
+            {
+                AddLog(type, message, DateTime.Now);
             }
         }
 
-        public bool AddApplication(ApplicationType composite)
+        public bool AddOrder(OrderType composite)
         {
             var tables = new LinqWorkerDataContext();
 
-            if (tables.Orders.All(x => x.DateTime != composite.ApplicationDateTime))
+            if (tables.Orders.All(x => x.Date != composite.OrderDateTime && x.Time != TimeSpan.Parse(composite.OrderDateTime.ToString("hh:mm"))))
             {
+                string type = "user", message = string.Empty;
+
                 var order = new Orders
                     {
-                        DateTime = composite.ApplicationDateTime,
-                        ApplicationNumber = composite.ApplicationNumber,
-                        Status = composite.OperationStatus,
                         ManagerId = composite.ManagerId,
+                        Article = composite.OrderArticle,
+                        Date = DateTime.Parse(composite.OrderDateTime.ToString("yy-MM-dd")),
+                        Time = TimeSpan.Parse(composite.OrderDateTime.ToString("hh:mm"))
                     };
 
                 try
                 {
                     String command =
                         String.Format(
-                            "INSERT INTO dbo.Orders(ApplicationNumber,DateTime,Status,ManagerId) VALUES(\'{0}\',\'{1}\',\'{2}\',\'{3}\')", order.ApplicationNumber,
-                            order.DateTime.ToString("yyyy-MM-dd hh:mm"),
-                            order.Status, order.ManagerId);
+                            "INSERT INTO dbo.Orders(Article,ManagerId,Date,Time) VALUES(\'{0}\',\'{1}\',\'{2}\',\'{3}\')",
+                            order.Article,
+                            order.ManagerId,
+                            order.Date,
+                            order.Time
+                            );
+
                     tables.ExecuteCommand(command);
+
+                    message = "Добавлена новая заявка : " + order.Article;
                     //tables.Orders.Context.SubmitChanges();
-                    var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + " заявка добавлена";
-                    var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
-                    var resp = reqGet.GetResponse();
                     return true;
                 }
                 catch (Exception ex)
                 {
-                    Console.Write(ex.Message);
+                    message = "Ошибка при добавление заявки : " + order.Article;
+                    type = "system";
+                    Console.WriteLine(ex.Message);
                     return false;
+                }
+                finally
+                {
+                    AddLog(type, message, DateTime.Now);
                 }
             }
             return false;
@@ -210,6 +259,8 @@ namespace WcfService1
 
             if (tables.Managers.All(x => x.ManagerName != composite.ManagerName))
             {
+                string type="user", message=string.Empty;
+
                 var manager = new Managers()
                     {
                         ManagerName = composite.ManagerName,
@@ -220,15 +271,20 @@ namespace WcfService1
                 {
                     tables.Managers.InsertOnSubmit(manager);
                     tables.Managers.Context.SubmitChanges();
-                    var text = DateTime.Now.ToString("yyyy-MM-dd hh:mm ") + "Менеджер добавлен";
-                    var reqGet = System.Net.WebRequest.Create(@"http://montka.herokuapp.com/logging{" + text + "}");
-                    var resp = reqGet.GetResponse();
+
+                    message = "Добавлен новый пользователь : " + composite.ManagerName;
                     return true;
                 }
                 catch (Exception ex)
                 {
                     Console.Write(ex.Message);
+                    message = "Ошибка при добавление пользователя : " + composite.ManagerName;
+                    type = "system";
                     return false;
+                }
+                finally
+                {
+                    AddLog(type, message, DateTime.Now);
                 }
             }
             return false;

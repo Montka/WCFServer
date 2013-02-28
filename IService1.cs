@@ -18,19 +18,19 @@ namespace WcfService1
         List<string> GetNewOperation();
 
         [OperationContract]
-        bool AddApplication(ApplicationType composite);
+        bool AddOrder(OrderType composite);
 
         [OperationContract]
         bool AddManager(ManagerType composite);
 
         [OperationContract]
-        bool DeleteApplication(int applicationId);
+        bool DeleteOrder(OrderType composite);
 
         [OperationContract]
-        bool DeleteManager(int managerId);
+        bool DeleteManager(ManagerType composite);
 
         [OperationContract]
-        bool UptadeApplication(ApplicationType composit);
+        bool UptadeOrder(OrderType composite);
 
         [OperationContract]
         bool UpdateManager(ManagerType composite);
@@ -44,22 +44,19 @@ namespace WcfService1
 
     // Используйте контракт данных, как показано в примере ниже, чтобы добавить составные типы к операциям служб.
     [DataContract]
-    public class ApplicationType
+    public class OrderType
     {
         [DataMember]
-        public int ApplicationId { get; set; }
+        public int OrderId { get; set; }
 
         [DataMember]
-        public int ApplicationNumber { get; set; }
+        public string OrderArticle { get; set; }
 
         [DataMember]
-        public DateTime ApplicationDateTime { get; set; }
+        public DateTime OrderDateTime { get; set; }
 
         [DataMember]
         public int ManagerId { get; set; }
-
-        [DataMember]
-        public int OperationStatus { get; set; }
     }
 
     // Используйте контракт данных, как показано в примере ниже, чтобы добавить составные типы к операциям служб.
