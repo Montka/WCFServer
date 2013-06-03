@@ -1,5 +1,10 @@
 R:\WCF\WcfService1\WcfService1\bin\WcfService1.dll
 R:\WCF\WcfService1\WcfService1\bin\WcfService1.pdb
-R:\WCF\WcfService1\WcfService1\obj\Release\WcfService1.csprojResolveAssemblyReference.cache
 R:\WCF\WcfService1\WcfService1\obj\Release\WcfService1.dll
 R:\WCF\WcfService1\WcfService1\obj\Release\WcfService1.pdb
+R:\WCF\WcfService1\WcfService1\obj\Release\WcfService1.csprojResolveAssemblyReference.cache
+E:\WCF\WcfService1\WcfService1\bin\WcfService1.dll
+E:\WCF\WcfService1\WcfService1\bin\WcfService1.pdb
+E:\WCF\WcfService1\WcfService1\obj\Release\WcfService1.csprojResolveAssemblyReference.cache
+E:\WCF\WcfService1\WcfService1\obj\Release\WcfService1.dll
+E:\WCF\WcfService1\WcfService1\obj\Release\WcfService1.pdb

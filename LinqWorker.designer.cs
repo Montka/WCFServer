@@ -30,13 +30,10 @@ namespace WcfService1
 		
     #region Определения метода расширяемости
     partial void OnCreated();
-    partial void InsertManagers(Managers instance);
-    partial void UpdateManagers(Managers instance);
-    partial void DeleteManagers(Managers instance);
     #endregion
 		
 		public LinqWorkerDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["DataSourceConnectionString"].ConnectionString, mappingSource)
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["DataSourceConnectionString2"].ConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -73,14 +70,6 @@ namespace WcfService1
 			}
 		}
 		
-		public System.Data.Linq.Table<Managers> Managers
-		{
-			get
-			{
-				return this.GetTable<Managers>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Orders> Orders
 		{
 			get
@@ -89,11 +78,27 @@ namespace WcfService1
 			}
 		}
 		
-		public System.Data.Linq.Table<Changes> Changes
+		public System.Data.Linq.Table<Test> Test
 		{
 			get
 			{
-				return this.GetTable<Changes>();
+				return this.GetTable<Test>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Items> Items
+		{
+			get
+			{
+				return this.GetTable<Items>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Users> Users
+		{
+			get
+			{
+				return this.GetTable<Users>();
 			}
 		}
 	}
@@ -109,8 +114,6 @@ namespace WcfService1
 		private string _Message;
 		
 		private System.DateTime _Date;
-		
-		private System.TimeSpan _Time;
 		
 		public Log()
 		{
@@ -164,7 +167,7 @@ namespace WcfService1
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="Date NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
 		public System.DateTime Date
 		{
 			get
@@ -179,132 +182,6 @@ namespace WcfService1
 				}
 			}
 		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Time", DbType="Time NOT NULL")]
-		public System.TimeSpan Time
-		{
-			get
-			{
-				return this._Time;
-			}
-			set
-			{
-				if ((this._Time != value))
-				{
-					this._Time = value;
-				}
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Managers")]
-	public partial class Managers : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _ManagerId;
-		
-		private string _ManagerName;
-		
-		private string _ManagerPassword;
-		
-    #region Определения метода расширяемости
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnManagerIdChanging(int value);
-    partial void OnManagerIdChanged();
-    partial void OnManagerNameChanging(string value);
-    partial void OnManagerNameChanged();
-    partial void OnManagerPasswordChanging(string value);
-    partial void OnManagerPasswordChanged();
-    #endregion
-		
-		public Managers()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int ManagerId
-		{
-			get
-			{
-				return this._ManagerId;
-			}
-			set
-			{
-				if ((this._ManagerId != value))
-				{
-					this.OnManagerIdChanging(value);
-					this.SendPropertyChanging();
-					this._ManagerId = value;
-					this.SendPropertyChanged("ManagerId");
-					this.OnManagerIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerName", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string ManagerName
-		{
-			get
-			{
-				return this._ManagerName;
-			}
-			set
-			{
-				if ((this._ManagerName != value))
-				{
-					this.OnManagerNameChanging(value);
-					this.SendPropertyChanging();
-					this._ManagerName = value;
-					this.SendPropertyChanged("ManagerName");
-					this.OnManagerNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerPassword", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string ManagerPassword
-		{
-			get
-			{
-				return this._ManagerPassword;
-			}
-			set
-			{
-				if ((this._ManagerPassword != value))
-				{
-					this.OnManagerPasswordChanging(value);
-					this.SendPropertyChanging();
-					this._ManagerPassword = value;
-					this.SendPropertyChanged("ManagerPassword");
-					this.OnManagerPasswordChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Orders")]
@@ -315,11 +192,15 @@ namespace WcfService1
 		
 		private string _Article;
 		
-		private int _ManagerId;
-		
 		private System.DateTime _Date;
 		
-		private System.TimeSpan _Time;
+		private string _Comment;
+		
+		private int _ItemId;
+		
+		private int _ItemCount;
+		
+		private int _UserId;
 		
 		public Orders()
 		{
@@ -341,7 +222,7 @@ namespace WcfService1
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Article", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Article", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
 		public string Article
 		{
 			get
@@ -357,23 +238,7 @@ namespace WcfService1
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagerId", DbType="Int NOT NULL")]
-		public int ManagerId
-		{
-			get
-			{
-				return this._ManagerId;
-			}
-			set
-			{
-				if ((this._ManagerId != value))
-				{
-					this._ManagerId = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="Date NOT NULL")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Date", DbType="DateTime NOT NULL")]
 		public System.DateTime Date
 		{
 			get
@@ -389,85 +254,112 @@ namespace WcfService1
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Time", DbType="Time NOT NULL")]
-		public System.TimeSpan Time
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Comment", DbType="VarChar(50)")]
+		public string Comment
 		{
 			get
 			{
-				return this._Time;
+				return this._Comment;
 			}
 			set
 			{
-				if ((this._Time != value))
+				if ((this._Comment != value))
 				{
-					this._Time = value;
+					this._Comment = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ItemId", DbType="Int NOT NULL")]
+		public int ItemId
+		{
+			get
+			{
+				return this._ItemId;
+			}
+			set
+			{
+				if ((this._ItemId != value))
+				{
+					this._ItemId = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ItemCount", DbType="Int NOT NULL")]
+		public int ItemCount
+		{
+			get
+			{
+				return this._ItemCount;
+			}
+			set
+			{
+				if ((this._ItemCount != value))
+				{
+					this._ItemCount = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", DbType="Int NOT NULL")]
+		public int UserId
+		{
+			get
+			{
+				return this._UserId;
+			}
+			set
+			{
+				if ((this._UserId != value))
+				{
+					this._UserId = value;
 				}
 			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Changes")]
-	public partial class Changes
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Test")]
+	public partial class Test
 	{
 		
-		private int _OrderId;
+		private string _test1;
 		
-		private System.DateTime _AddDateTime;
+		public Test()
+		{
+		}
 		
-		private System.DateTime _OrderDateTime;
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Name="test", Storage="_test1", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string test1
+		{
+			get
+			{
+				return this._test1;
+			}
+			set
+			{
+				if ((this._test1 != value))
+				{
+					this._test1 = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Items")]
+	public partial class Items
+	{
 		
 		private int _Id;
 		
-		public Changes()
-		{
-		}
+		private string _Name;
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderId", DbType="Int NOT NULL")]
-		public int OrderId
-		{
-			get
-			{
-				return this._OrderId;
-			}
-			set
-			{
-				if ((this._OrderId != value))
-				{
-					this._OrderId = value;
-				}
-			}
-		}
+		private int _Count;
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AddDateTime", DbType="DateTime NOT NULL")]
-		public System.DateTime AddDateTime
-		{
-			get
-			{
-				return this._AddDateTime;
-			}
-			set
-			{
-				if ((this._AddDateTime != value))
-				{
-					this._AddDateTime = value;
-				}
-			}
-		}
+		private double _Price;
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OrderDateTime", DbType="DateTime NOT NULL")]
-		public System.DateTime OrderDateTime
+		public Items()
 		{
-			get
-			{
-				return this._OrderDateTime;
-			}
-			set
-			{
-				if ((this._OrderDateTime != value))
-				{
-					this._OrderDateTime = value;
-				}
-			}
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
@@ -482,6 +374,135 @@ namespace WcfService1
 				if ((this._Id != value))
 				{
 					this._Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this._Name = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Count", DbType="Int NOT NULL")]
+		public int Count
+		{
+			get
+			{
+				return this._Count;
+			}
+			set
+			{
+				if ((this._Count != value))
+				{
+					this._Count = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Price", DbType="Float NOT NULL")]
+		public double Price
+		{
+			get
+			{
+				return this._Price;
+			}
+			set
+			{
+				if ((this._Price != value))
+				{
+					this._Price = value;
+				}
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
+	public partial class Users
+	{
+		
+		private int _Id;
+		
+		private string _Fio;
+		
+		private string _Login;
+		
+		private string _Password;
+		
+		public Users()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.Always, DbType="Int NOT NULL IDENTITY", IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this._Id = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fio", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Fio
+		{
+			get
+			{
+				return this._Fio;
+			}
+			set
+			{
+				if ((this._Fio != value))
+				{
+					this._Fio = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Login", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Login
+		{
+			get
+			{
+				return this._Login;
+			}
+			set
+			{
+				if ((this._Login != value))
+				{
+					this._Login = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Password", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Password
+		{
+			get
+			{
+				return this._Password;
+			}
+			set
+			{
+				if ((this._Password != value))
+				{
+					this._Password = value;
 				}
 			}
 		}
